@@ -3445,3 +3445,503 @@ org.springframework.web.servlet.resource.NoResourceFoundException: No static res
 2025-06-22 20:50:01 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
 2025-06-22 20:50:01 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
 2025-06-22 20:50:01 [restartedMain] INFO  c.j.i.InventarioTiendaApplication - Started InventarioTiendaApplication in 7.539 seconds (process running for 8.134)
+2025-06-22 20:59:11 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-22 20:59:11 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-22 20:59:11 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-22 20:59:11 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/usuarios
+2025-06-22 20:59:11 [http-nio-8080-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 20:59:11 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/usuarios
+2025-06-22 20:59:11 [http-nio-8080-exec-1] INFO  c.j.i.controller.UsuarioController - GET /api/usuarios - Solicitando todos los usuarios
+2025-06-22 20:59:11 [http-nio-8080-exec-1] DEBUG c.j.i.service.UsuarioService - Obteniendo todos los usuarios
+2025-06-22 20:59:11 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.activo,
+        u1_0.email,
+        u1_0.fecha_creacion,
+        u1_0.nombre_completo,
+        u1_0.password,
+        u1_0.rol_id,
+        u1_0.username 
+    from
+        usuarios u1_0
+2025-06-22 20:59:11 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.descripcion,
+        r1_0.fecha_creacion,
+        r1_0.nombre 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-22 20:59:11 [http-nio-8080-exec-1] INFO  c.j.i.controller.UsuarioController - GET /api/usuarios - Encontrados 1 usuarios
+2025-06-22 20:59:11 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2025-06-22 20:59:11 [http-nio-8080-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 20:59:11 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2025-06-22 20:59:11 [http-nio-8080-exec-2] ERROR c.j.i.config.ExceptionConfig - Error interno del servidor: No static resource /favicon.ico.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource /favicon.ico.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2025-06-22 20:59:11 [http-nio-8080-exec-2] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource /favicon.ico.]
+2025-06-22 20:59:49 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/productos
+2025-06-22 20:59:49 [http-nio-8080-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 20:59:49 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/productos
+2025-06-22 20:59:49 [http-nio-8080-exec-4] INFO  c.j.i.controller.ProductoController - GET /api/productos - Solicitando todos los productos
+2025-06-22 20:59:49 [http-nio-8080-exec-4] DEBUG c.j.i.service.ProductoService - Obteniendo todos los productos
+2025-06-22 20:59:49 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        p1_0.id,
+        p1_0.categoria_id,
+        p1_0.descripcion,
+        p1_0.fecha_actualizacion,
+        p1_0.fecha_creacion,
+        p1_0.nombre,
+        p1_0.precio,
+        p1_0.stock_actual,
+        p1_0.stock_minimo 
+    from
+        productos p1_0
+2025-06-22 20:59:49 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0 
+    where
+        c1_0.id=?
+2025-06-22 20:59:49 [http-nio-8080-exec-4] INFO  c.j.i.controller.ProductoController - GET /api/productos - Encontrados 1 productos
+2025-06-22 21:02:43 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/categorias
+2025-06-22 21:02:43 [http-nio-8080-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:02:43 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/categorias
+2025-06-22 21:02:43 [http-nio-8080-exec-8] INFO  c.j.i.controller.CategoriaController - GET /api/categorias - Solicitando todas las categorías
+2025-06-22 21:02:43 [http-nio-8080-exec-8] DEBUG c.j.i.service.CategoriaService - Obteniendo todas las categorías
+2025-06-22 21:02:43 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0
+2025-06-22 21:02:43 [http-nio-8080-exec-8] INFO  c.j.i.controller.CategoriaController - GET /api/categorias - Encontradas 6 categorías
+2025-06-22 21:02:58 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/categorias/1
+2025-06-22 21:02:58 [http-nio-8080-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:02:58 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/categorias/1
+2025-06-22 21:02:58 [http-nio-8080-exec-9] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/1 - Solicitando categoría por ID
+2025-06-22 21:02:58 [http-nio-8080-exec-9] DEBUG c.j.i.service.CategoriaService - Obteniendo categoría por ID: 1
+2025-06-22 21:02:58 [http-nio-8080-exec-9] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0 
+    where
+        c1_0.id=?
+2025-06-22 21:02:58 [http-nio-8080-exec-9] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/1 - Categoría encontrada: Electrónicos
+2025-06-22 21:03:07 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/categorias/buscar?nombre=Electr%C3%B3nicos
+2025-06-22 21:03:07 [http-nio-8080-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:03:07 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/categorias/buscar?nombre=Electr%C3%B3nicos
+2025-06-22 21:03:07 [http-nio-8080-exec-10] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/buscar?nombre=Electrónicos - Buscando categoría por nombre
+2025-06-22 21:03:07 [http-nio-8080-exec-10] DEBUG c.j.i.service.CategoriaService - Obteniendo categoría por nombre: Electrónicos
+2025-06-22 21:03:08 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0 
+    where
+        upper(c1_0.nombre)=upper(?)
+2025-06-22 21:03:08 [http-nio-8080-exec-10] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/buscar - Categoría encontrada: Electrónicos
+2025-06-22 21:04:32 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/categorias
+2025-06-22 21:04:32 [http-nio-8080-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:04:32 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/categorias
+2025-06-22 21:04:32 [http-nio-8080-exec-3] INFO  c.j.i.controller.CategoriaController - GET /api/categorias - Solicitando todas las categorías
+2025-06-22 21:04:32 [http-nio-8080-exec-3] DEBUG c.j.i.service.CategoriaService - Obteniendo todas las categorías
+2025-06-22 21:04:32 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0
+2025-06-22 21:04:32 [http-nio-8080-exec-3] INFO  c.j.i.controller.CategoriaController - GET /api/categorias - Encontradas 6 categorías
+2025-06-22 21:04:51 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/categorias/1
+2025-06-22 21:04:51 [http-nio-8080-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:04:51 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/categorias/1
+2025-06-22 21:04:51 [http-nio-8080-exec-4] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/1 - Solicitando categoría por ID
+2025-06-22 21:04:51 [http-nio-8080-exec-4] DEBUG c.j.i.service.CategoriaService - Obteniendo categoría por ID: 1
+2025-06-22 21:04:51 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0 
+    where
+        c1_0.id=?
+2025-06-22 21:04:51 [http-nio-8080-exec-4] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/1 - Categoría encontrada: Electrónicos
+2025-06-22 21:04:57 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/categorias/2
+2025-06-22 21:04:57 [http-nio-8080-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:04:57 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/categorias/2
+2025-06-22 21:04:57 [http-nio-8080-exec-6] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/2 - Solicitando categoría por ID
+2025-06-22 21:04:57 [http-nio-8080-exec-6] DEBUG c.j.i.service.CategoriaService - Obteniendo categoría por ID: 2
+2025-06-22 21:04:57 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0 
+    where
+        c1_0.id=?
+2025-06-22 21:04:57 [http-nio-8080-exec-6] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/2 - Categoría encontrada: Ropa
+2025-06-22 21:05:04 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/categorias/buscar?nombre=Electr%C3%B3nicos
+2025-06-22 21:05:04 [http-nio-8080-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:05:04 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/categorias/buscar?nombre=Electr%C3%B3nicos
+2025-06-22 21:05:04 [http-nio-8080-exec-5] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/buscar?nombre=Electrónicos - Buscando categoría por nombre
+2025-06-22 21:05:04 [http-nio-8080-exec-5] DEBUG c.j.i.service.CategoriaService - Obteniendo categoría por nombre: Electrónicos
+2025-06-22 21:05:04 [http-nio-8080-exec-5] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0 
+    where
+        upper(c1_0.nombre)=upper(?)
+2025-06-22 21:05:04 [http-nio-8080-exec-5] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/buscar - Categoría encontrada: Electrónicos
+2025-06-22 21:05:20 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing POST /api/categorias
+2025-06-22 21:05:20 [http-nio-8080-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:05:20 [http-nio-8080-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured POST /api/categorias
+2025-06-22 21:05:20 [http-nio-8080-exec-7] INFO  c.j.i.controller.CategoriaController - POST /api/categorias - Creando nueva categoría: CategoriaRequest{nombre='Nueva Categoria Test 2', tieneDescripcion=true}
+2025-06-22 21:05:20 [http-nio-8080-exec-7] DEBUG c.j.i.service.CategoriaService - Creando nueva categoría: Nueva Categoria Test 2
+2025-06-22 21:05:20 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id 
+    from
+        categorias c1_0 
+    where
+        c1_0.nombre=? 
+    limit
+        ?
+2025-06-22 21:05:21 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        categorias
+        (descripcion, fecha_creacion, nombre) 
+    values
+        (?, ?, ?)
+2025-06-22 21:05:21 [http-nio-8080-exec-7] INFO  c.j.i.service.CategoriaService - Categoría creada exitosamente con ID: 7
+2025-06-22 21:05:21 [http-nio-8080-exec-7] INFO  c.j.i.controller.CategoriaController - POST /api/categorias - Categoría creada exitosamente con ID: 7
+2025-06-22 21:05:34 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/categorias/1
+2025-06-22 21:05:34 [http-nio-8080-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:05:34 [http-nio-8080-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/categorias/1
+2025-06-22 21:05:34 [http-nio-8080-exec-8] INFO  c.j.i.controller.CategoriaController - PUT /api/categorias/1 - Actualizando categoría: CategoriaRequest{nombre='Electrónicos', tieneDescripcion=true}
+2025-06-22 21:05:34 [http-nio-8080-exec-8] DEBUG c.j.i.service.CategoriaService - Actualizando categoría con ID: 1
+2025-06-22 21:05:34 [http-nio-8080-exec-8] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0 
+    where
+        c1_0.id=?
+2025-06-22 21:05:34 [http-nio-8080-exec-8] INFO  c.j.i.service.CategoriaService - Categoría actualizada exitosamente: Electrónicos
+2025-06-22 21:05:34 [http-nio-8080-exec-8] INFO  c.j.i.controller.CategoriaController - PUT /api/categorias/1 - Categoría actualizada exitosamente
+2025-06-22 21:05:42 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/categorias
+2025-06-22 21:05:42 [http-nio-8080-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:05:42 [http-nio-8080-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/categorias
+2025-06-22 21:05:42 [http-nio-8080-exec-9] INFO  c.j.i.controller.CategoriaController - GET /api/categorias - Solicitando todas las categorías
+2025-06-22 21:05:42 [http-nio-8080-exec-9] DEBUG c.j.i.service.CategoriaService - Obteniendo todas las categorías
+2025-06-22 21:05:42 [http-nio-8080-exec-9] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0
+2025-06-22 21:05:42 [http-nio-8080-exec-9] INFO  c.j.i.controller.CategoriaController - GET /api/categorias - Encontradas 7 categorías
+2025-06-22 21:05:51 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/categorias/7
+2025-06-22 21:05:51 [http-nio-8080-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:05:51 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/categorias/7
+2025-06-22 21:05:51 [http-nio-8080-exec-10] INFO  c.j.i.controller.CategoriaController - PUT /api/categorias/7 - Actualizando categoría: CategoriaRequest{nombre='Electrónicos', tieneDescripcion=true}
+2025-06-22 21:05:51 [http-nio-8080-exec-10] DEBUG c.j.i.service.CategoriaService - Actualizando categoría con ID: 7
+2025-06-22 21:05:51 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0 
+    where
+        c1_0.id=?
+2025-06-22 21:05:51 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id 
+    from
+        categorias c1_0 
+    where
+        c1_0.nombre=? 
+    limit
+        ?
+2025-06-22 21:05:51 [http-nio-8080-exec-10] WARN  c.j.i.controller.CategoriaController - PUT /api/categorias/7 - Error de negocio: Ya existe una categoría con el nombre: Electrónicos
+2025-06-22 21:06:05 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing PUT /api/categorias/7
+2025-06-22 21:06:05 [http-nio-8080-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:06:05 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured PUT /api/categorias/7
+2025-06-22 21:06:05 [http-nio-8080-exec-1] INFO  c.j.i.controller.CategoriaController - PUT /api/categorias/7 - Actualizando categoría: CategoriaRequest{nombre='Electrónic', tieneDescripcion=true}
+2025-06-22 21:06:05 [http-nio-8080-exec-1] DEBUG c.j.i.service.CategoriaService - Actualizando categoría con ID: 7
+2025-06-22 21:06:05 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0 
+    where
+        c1_0.id=?
+2025-06-22 21:06:05 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id 
+    from
+        categorias c1_0 
+    where
+        c1_0.nombre=? 
+    limit
+        ?
+2025-06-22 21:06:05 [http-nio-8080-exec-1] INFO  c.j.i.service.CategoriaService - Categoría actualizada exitosamente: Electrónic
+2025-06-22 21:06:05 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    update
+        categorias 
+    set
+        descripcion=?,
+        nombre=? 
+    where
+        id=?
+2025-06-22 21:06:05 [http-nio-8080-exec-1] INFO  c.j.i.controller.CategoriaController - PUT /api/categorias/7 - Categoría actualizada exitosamente
+2025-06-22 21:06:19 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/categorias/existe?nombre=Electr%C3%B3nic
+2025-06-22 21:06:19 [http-nio-8080-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:06:19 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/categorias/existe?nombre=Electr%C3%B3nic
+2025-06-22 21:06:19 [http-nio-8080-exec-2] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/existe?nombre=Electrónic - Verificando existencia de la categoría
+2025-06-22 21:06:19 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id 
+    from
+        categorias c1_0 
+    where
+        c1_0.nombre=? 
+    limit
+        ?
+2025-06-22 21:06:19 [http-nio-8080-exec-2] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/existe - Resultado: true
+2025-06-22 21:06:29 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/categorias/1/productos/contar
+2025-06-22 21:06:29 [http-nio-8080-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:06:29 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/categorias/1/productos/contar
+2025-06-22 21:06:29 [http-nio-8080-exec-3] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/1/productos/contar - Contando productos de la categoría
+2025-06-22 21:06:29 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        count(p1_0.id) 
+    from
+        productos p1_0 
+    where
+        p1_0.categoria_id=?
+2025-06-22 21:06:29 [http-nio-8080-exec-3] INFO  c.j.i.controller.CategoriaController - GET /api/categorias/1/productos/contar - Cantidad: 1
+2025-06-22 21:06:38 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/productos
+2025-06-22 21:06:38 [http-nio-8080-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:06:38 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/productos
+2025-06-22 21:06:38 [http-nio-8080-exec-4] INFO  c.j.i.controller.ProductoController - GET /api/productos - Solicitando todos los productos
+2025-06-22 21:06:38 [http-nio-8080-exec-4] DEBUG c.j.i.service.ProductoService - Obteniendo todos los productos
+2025-06-22 21:06:38 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        p1_0.id,
+        p1_0.categoria_id,
+        p1_0.descripcion,
+        p1_0.fecha_actualizacion,
+        p1_0.fecha_creacion,
+        p1_0.nombre,
+        p1_0.precio,
+        p1_0.stock_actual,
+        p1_0.stock_minimo 
+    from
+        productos p1_0
+2025-06-22 21:06:38 [http-nio-8080-exec-4] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0 
+    where
+        c1_0.id=?
+2025-06-22 21:06:38 [http-nio-8080-exec-4] INFO  c.j.i.controller.ProductoController - GET /api/productos - Encontrados 1 productos
+2025-06-22 21:06:52 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing DELETE /api/categorias/7
+2025-06-22 21:06:52 [http-nio-8080-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:06:52 [http-nio-8080-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured DELETE /api/categorias/7
+2025-06-22 21:06:52 [http-nio-8080-exec-6] INFO  c.j.i.controller.CategoriaController - DELETE /api/categorias/7 - Eliminando categoría
+2025-06-22 21:06:52 [http-nio-8080-exec-6] DEBUG c.j.i.service.CategoriaService - Eliminando categoría con ID: 7
+2025-06-22 21:06:52 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0 
+    where
+        c1_0.id=?
+2025-06-22 21:06:52 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        case 
+            when count(p1_0.id)>0 
+                then 1 
+            else 0 
+    end 
+from
+    productos p1_0 
+where
+    p1_0.categoria_id=?
+2025-06-22 21:06:52 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    select
+        p1_0.categoria_id,
+        p1_0.id,
+        p1_0.descripcion,
+        p1_0.fecha_actualizacion,
+        p1_0.fecha_creacion,
+        p1_0.nombre,
+        p1_0.precio,
+        p1_0.stock_actual,
+        p1_0.stock_minimo 
+    from
+        productos p1_0 
+    where
+        p1_0.categoria_id=?
+2025-06-22 21:06:52 [http-nio-8080-exec-6] INFO  c.j.i.service.CategoriaService - Categoría eliminada exitosamente: Electrónic
+2025-06-22 21:06:52 [http-nio-8080-exec-6] DEBUG org.hibernate.SQL - 
+    delete 
+    from
+        categorias 
+    where
+        id=?
+2025-06-22 21:06:52 [http-nio-8080-exec-6] INFO  c.j.i.controller.CategoriaController - DELETE /api/categorias/7 - Categoría eliminada exitosamente
+2025-06-22 21:07:05 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api/categorias
+2025-06-22 21:07:05 [http-nio-8080-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-22 21:07:05 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api/categorias
+2025-06-22 21:07:05 [http-nio-8080-exec-5] INFO  c.j.i.controller.CategoriaController - GET /api/categorias - Solicitando todas las categorías
+2025-06-22 21:07:05 [http-nio-8080-exec-5] DEBUG c.j.i.service.CategoriaService - Obteniendo todas las categorías
+2025-06-22 21:07:05 [http-nio-8080-exec-5] DEBUG org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.descripcion,
+        c1_0.fecha_creacion,
+        c1_0.nombre 
+    from
+        categorias c1_0
+2025-06-22 21:07:05 [http-nio-8080-exec-5] INFO  c.j.i.controller.CategoriaController - GET /api/categorias - Encontradas 6 categorías

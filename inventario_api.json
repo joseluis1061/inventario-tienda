@@ -1,0 +1,945 @@
+{
+	"info": {
+		"_postman_id": "inventario-api-2024",
+		"name": "Sistema de Inventario API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "inventario-2024"
+	},
+	"item": [
+		{
+			"name": "Health Checks",
+			"item": [
+				{
+					"name": "API Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actuator/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["actuator", "health"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Categorias Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/categorias/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "categorias", "health"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categorias",
+			"item": [
+				{
+					"name": "Listar todas las categorias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/categorias",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "categorias"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener categoria por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/categorias/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "categorias", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar categoria por nombre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/categorias/buscar?nombre=Electrónicos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "categorias", "buscar"],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "Electrónicos"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear categoria",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Nueva Categoria Test\",\n    \"descripcion\": \"Categoria creada para pruebas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/categorias",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "categorias"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar categoria",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Categoria Actualizada\",\n    \"descripcion\": \"Descripcion actualizada para pruebas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/categorias/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "categorias", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar categoria",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/categorias/6",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "categorias", "6"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar si existe categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/categorias/existe?nombre=Electrónicos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "categorias", "existe"],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "Electrónicos"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contar productos por categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/categorias/1/productos/contar",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "categorias", "1", "productos", "contar"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Productos",
+			"item": [
+				{
+					"name": "Listar todos los productos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/productos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener producto por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/productos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar producto por nombre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/productos/buscar?nombre=iPhone",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos", "buscar"],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "iPhone"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Productos por categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/productos/por-categoria/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos", "por-categoria", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Productos con stock bajo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/productos/stock-bajo",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos", "stock-bajo"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Productos con stock critico",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/productos/stock-critico",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos", "stock-critico"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Productos por rango de precio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/productos/por-precio?min=100.00&max=500.00",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos", "por-precio"],
+							"query": [
+								{
+									"key": "min",
+									"value": "100.00"
+								},
+								{
+									"key": "max",
+									"value": "500.00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear producto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"iPhone 15 Pro\",\n    \"descripcion\": \"Smartphone Apple iPhone 15 Pro con chip A17 Pro\",\n    \"precio\": 1299.99,\n    \"stockMinimo\": 5,\n    \"categoriaId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/productos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar producto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"iPhone 15 Pro Max\",\n    \"descripcion\": \"Smartphone Apple iPhone 15 Pro Max actualizado\",\n    \"precio\": 1399.99,\n    \"stockMinimo\": 10,\n    \"categoriaId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/productos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar producto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/productos/2",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos", "2"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar stock disponible",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/productos/1/stock-disponible?cantidad=5",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos", "1", "stock-disponible"],
+							"query": [
+								{
+									"key": "cantidad",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Estadisticas de stock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/productos/estadisticas-stock",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productos", "estadisticas-stock"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Listar todos los usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/usuarios",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "usuarios"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usuarios activos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/usuarios/activos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "usuarios", "activos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener usuario por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/usuarios/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "usuarios", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar usuario por username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/usuarios/buscar?username=admin",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "usuarios", "buscar"],
+							"query": [
+								{
+									"key": "username",
+									"value": "admin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usuarios por rol",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/usuarios/por-rol/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "usuarios", "por-rol", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"usuariotest\",\n    \"nombreCompleto\": \"Usuario de Prueba\",\n    \"email\": \"test@ejemplo.com\",\n    \"activo\": true,\n    \"rolId\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/usuarios?password=password123",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "usuarios"],
+							"query": [
+								{
+									"key": "password",
+									"value": "password123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar usuario",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"usuariotest\",\n    \"nombreCompleto\": \"Usuario Test Actualizado\",\n    \"email\": \"test-actualizado@ejemplo.com\",\n    \"activo\": true,\n    \"rolId\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/usuarios/2",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "usuarios", "2"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar contraseña",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/usuarios/2/cambiar-password?passwordActual=password123&passwordNuevo=newpassword123",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "usuarios", "2", "cambiar-password"],
+							"query": [
+								{
+									"key": "passwordActual",
+									"value": "password123"
+								},
+								{
+									"key": "passwordNuevo",
+									"value": "newpassword123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar estado usuario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/usuarios/2/cambiar-estado?activo=false",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "usuarios", "2", "cambiar-estado"],
+							"query": [
+								{
+									"key": "activo",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/usuarios/3",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "usuarios", "3"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Listar todos los roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/roles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "roles"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener rol por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/roles/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "roles", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar rol por nombre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/roles/buscar?nombre=ADMIN",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "roles", "buscar"],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "ADMIN"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear rol",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"SUPERVISOR\",\n    \"descripcion\": \"Supervisor con permisos intermedios\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/roles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "roles"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar rol",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"SUPERVISOR\",\n    \"descripcion\": \"Supervisor actualizado con permisos especiales\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/roles/4",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "roles", "4"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar rol",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/roles/4",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "roles", "4"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movimientos",
+			"item": [
+				{
+					"name": "Listar todos los movimientos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Historial paginado",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos/historial?pagina=0&tamaño=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos", "historial"],
+							"query": [
+								{
+									"key": "pagina",
+									"value": "0"
+								},
+								{
+									"key": "tamaño",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener movimiento por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movimientos por producto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos/por-producto/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos", "por-producto", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movimientos por usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos/por-usuario/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos", "por-usuario", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movimientos por tipo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos/por-tipo/ENTRADA",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos", "por-tipo", "ENTRADA"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movimientos recientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos/recientes?dias=7",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos", "recientes"],
+							"query": [
+								{
+									"key": "dias",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear entrada",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productoId\": 1,\n    \"usuarioId\": 1,\n    \"tipoMovimiento\": \"ENTRADA\",\n    \"cantidad\": 50,\n    \"motivo\": \"Compra de inventario inicial\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos/entrada",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos", "entrada"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear salida",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productoId\": 1,\n    \"usuarioId\": 1,\n    \"tipoMovimiento\": \"SALIDA\",\n    \"cantidad\": 10,\n    \"motivo\": \"Venta a cliente\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos/salida",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos", "salida"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear movimiento generico",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productoId\": 1,\n    \"usuarioId\": 1,\n    \"tipoMovimiento\": \"ENTRADA\",\n    \"cantidad\": 25,\n    \"motivo\": \"Reposicion de stock\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resumen por producto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos/resumen-producto/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos", "resumen-producto", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Estadisticas por periodo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/movimientos/estadisticas?inicio=2024-01-01 00:00:00&fin=2024-12-31 23:59:59",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "movimientos", "estadisticas"],
+							"query": [
+								{
+									"key": "inicio",
+									"value": "2024-01-01 00:00:00"
+								},
+								{
+									"key": "fin",
+									"value": "2024-12-31 23:59:59"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
