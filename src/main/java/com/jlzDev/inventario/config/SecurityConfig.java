@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -21,24 +20,17 @@ import org.springframework.web.cors.CorsConfigurationSource;
 /**
  * Configuración de seguridad principal con JWT
  * Maneja autenticación, autorización y configuraciones de seguridad
+ * NOTA: PasswordEncoder está en PasswordEncoderConfig para evitar dependencias circulares
  */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-@RequiredArgsConstructor // Lombok para constructor con final fields
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final CorsConfigurationSource corsConfigurationSource;
     private final UserDetailsServiceImpl userDetailsService;
-
-    /**
-     * Bean para encriptar contraseñas con BCrypt
-     * Fuerza de encriptación: 12 (más seguro que el default 10)
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
-    }
+    private final PasswordEncoder passwordEncoder; // Inyectado desde PasswordEncoderConfig
 
     /**
      * Bean del AuthenticationManager
@@ -56,7 +48,7 @@ public class SecurityConfig {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
+        provider.setPasswordEncoder(passwordEncoder);
         provider.setHideUserNotFoundExceptions(false); // Para debugging, cambiar a true en producción
         return provider;
     }

@@ -64,15 +64,18 @@ public class JwtUtil {
         this.jwtExpirationHours = jwtExpirationHours;
         this.refreshExpirationDays = refreshExpirationDays;
 
-        // Usar el secreto del application.properties o el hardcoded como fallback
-        String secret = (jwtSecret != null && !jwtSecret.trim().isEmpty())
-                ? jwtSecret
-                : "mi-clave-secreta-super-segura-para-jwt-inventario-2024";
+        // SOLUCIÓN: Generar clave segura para HS512
+        if (jwtSecret != null && !jwtSecret.trim().isEmpty() && jwtSecret.length() >= 64) {
+            // Si el secreto es lo suficientemente largo, usarlo
+            this.secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        } else {
+            // Si no hay secreto o es muy corto, generar uno seguro automáticamente
+            log.warn("JWT secret no configurado o muy corto. Generando clave segura automáticamente.");
+            this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        }
 
-        // Generar clave segura desde el string
-        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
-
-        log.info("JwtUtil inicializado - Expiración: {}h, Refresh: {}d", jwtExpirationHours, refreshExpirationDays);
+        log.info("JwtUtil inicializado - Expiración: {}h, Refresh: {}d, Clave: {}bits",
+                jwtExpirationHours, refreshExpirationDays, secretKey.getEncoded().length * 8);
     }
 
     /**
@@ -290,7 +293,7 @@ public class JwtUtil {
             log.warn("Token malformado: {}", e.getMessage());
             return TokenResponse.tokenInvalido("Token malformado");
 
-        } catch (SignatureException e) {
+        } catch (io.jsonwebtoken.security.SignatureException e) {
             log.warn("Firma de token inválida: {}", e.getMessage());
             return TokenResponse.tokenInvalido("Firma inválida");
 
