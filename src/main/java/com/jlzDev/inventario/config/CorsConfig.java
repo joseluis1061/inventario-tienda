@@ -10,41 +10,53 @@ import java.util.Arrays;
 
 /**
  * Configuración de CORS (Cross-Origin Resource Sharing)
- * Versión simplificada para desarrollo sin conflictos
+ * Permite requests desde diferentes dominios al API
  */
 @Configuration
 public class CorsConfig {
 
     /**
-     * Configuración única de CORS usando CorsConfigurationSource
-     * Esta es la única configuración CORS que debe existir
+     * Configuración de CORS para toda la aplicación
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Para desarrollo: permitir todos los orígenes
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        // Permitir orígenes específicos (en producción cambiar por dominios reales)
+        configuration.setAllowedOriginPatterns(Arrays.asList(
+                "http://localhost:*",
+                "http://127.0.0.1:*",
+                "https://*.tudominio.com" // Cambiar por tu dominio en producción
+        ));
 
         // Métodos HTTP permitidos
         configuration.setAllowedMethods(Arrays.asList(
-                "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"
+                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
         ));
 
         // Headers permitidos
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-
-        // Headers expuestos
-        configuration.setExposedHeaders(Arrays.asList(
-                "Access-Control-Allow-Origin",
-                "Content-Disposition"
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"
         ));
 
-        // IMPORTANTE: Deshabilitar credenciales para poder usar "*"
-        configuration.setAllowCredentials(false);
+        // Headers expuestos al cliente
+        configuration.setExposedHeaders(Arrays.asList(
+                "Access-Control-Allow-Origin",
+                "Access-Control-Allow-Credentials",
+                "Authorization"
+        ));
 
-        // Cache para preflight requests
-        configuration.setMaxAge(3600L);
+        // Permitir envío de credenciales (cookies, authorization headers)
+        configuration.setAllowCredentials(true);
+
+        // Tiempo de caché para preflight requests (en segundos)
+        configuration.setMaxAge(3600L); // 1 hora
 
         // Aplicar configuración a todas las rutas
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -1,26 +1,35 @@
 package com.jlzDev.inventario.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.jlzDev.inventario.security.JwtAuthenticationFilter;
+import com.jlzDev.inventario.security.UserDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 /**
- * Configuración de seguridad principal
+ * Configuración de seguridad principal con JWT
  * Maneja autenticación, autorización y configuraciones de seguridad
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@RequiredArgsConstructor // Lombok para constructor con final fields
 public class SecurityConfig {
 
-    @Autowired
-    private CorsConfigurationSource corsConfigurationSource;
+    private final CorsConfigurationSource corsConfigurationSource;
+    private final UserDetailsServiceImpl userDetailsService;
 
     /**
      * Bean para encriptar contraseñas con BCrypt
@@ -32,35 +41,88 @@ public class SecurityConfig {
     }
 
     /**
-     * Configuración de seguridad HTTP
-     * Por ahora configuración básica para desarrollo
+     * Bean del AuthenticationManager
+     * Necesario para el proceso de autenticación
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    /**
+     * Bean del Authentication Provider que usa nuestro UserDetailsService
+     */
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        provider.setHideUserNotFoundExceptions(false); // Para debugging, cambiar a true en producción
+        return provider;
+    }
+
+    /**
+     * Bean del JwtAuthenticationFilter
+     * Se crea aquí para evitar dependencias circulares
+     */
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
+    }
+
+    /**
+     * Configuración principal de seguridad HTTP con JWT
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // Deshabilitar CSRF para APIs REST
+                // Deshabilitar CSRF para APIs REST (JWT es stateless)
                 .csrf(csrf -> csrf.disable())
 
                 // Configurar CORS usando el bean de CorsConfig
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
 
-                // Configuración de autorización
+                // Configuración de autorización por endpoints
                 .authorizeHttpRequests(authz -> authz
-                                // Permitir acceso sin autenticación para desarrollo
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/public/**").permitAll()
-                                .requestMatchers("/h2-console/**").permitAll() // Para H2 Database Console si se usa
-                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Para Swagger
-                                .requestMatchers("/actuator/**").permitAll() // Para Spring Boot Actuator
+                        // ===== ENDPOINTS PÚBLICOS (sin autenticación) =====
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/public/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                        .requestMatchers("/favicon.ico", "/error").permitAll()
 
-                                // IMPORTANTE: Cambiar esta línea en producción
-                                // Por ahora permitimos todo para desarrollo y testing
-                                .anyRequest().permitAll() // Cambiar a .authenticated() cuando se implemente JWT
+                        // ===== ENDPOINTS DE ADMINISTRADOR =====
+                        .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers("/api/roles/**").hasRole("ADMIN")
+                        .requestMatchers("/actuator/**").hasRole("ADMIN")
 
-                        // Para producción usar algo como:
-                        // .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        // .requestMatchers("/api/manager/**").hasAnyRole("ADMIN", "MANAGER")
-                        // .anyRequest().authenticated()
+                        // ===== ENDPOINTS DE GERENTE O SUPERIOR =====
+                        .requestMatchers("/api/reportes/**").hasAnyRole("ADMIN", "GERENTE")
+                        .requestMatchers("/api/estadisticas/**").hasAnyRole("ADMIN", "GERENTE")
+
+                        // ===== ENDPOINTS DE PRODUCTOS (por método HTTP) =====
+                        // Solo lectura para empleados
+                        .requestMatchers("GET", "/api/productos/**").hasAnyRole("ADMIN", "GERENTE", "EMPLEADO")
+                        // Escritura solo para gerente o superior
+                        .requestMatchers("POST", "/api/productos/**").hasAnyRole("ADMIN", "GERENTE")
+                        .requestMatchers("PUT", "/api/productos/**").hasAnyRole("ADMIN", "GERENTE")
+                        .requestMatchers("DELETE", "/api/productos/**").hasRole("ADMIN")
+
+                        // ===== ENDPOINTS DE CATEGORÍAS (por método HTTP) =====
+                        .requestMatchers("GET", "/api/categorias/**").hasAnyRole("ADMIN", "GERENTE", "EMPLEADO")
+                        .requestMatchers("POST", "/api/categorias/**").hasAnyRole("ADMIN", "GERENTE")
+                        .requestMatchers("PUT", "/api/categorias/**").hasAnyRole("ADMIN", "GERENTE")
+                        .requestMatchers("DELETE", "/api/categorias/**").hasRole("ADMIN")
+
+                        // ===== ENDPOINTS DE MOVIMIENTOS =====
+                        // Lectura: todos los roles autenticados
+                        .requestMatchers("GET", "/api/movimientos/**").hasAnyRole("ADMIN", "GERENTE", "EMPLEADO")
+                        // Crear movimientos: gerente o superior
+                        .requestMatchers("POST", "/api/movimientos/**").hasAnyRole("ADMIN", "GERENTE")
+
+                        // ===== CUALQUIER OTRA REQUEST REQUIERE AUTENTICACIÓN =====
+                        .anyRequest().authenticated()
                 )
 
                 // Configurar sesiones como stateless (para JWT)
@@ -68,15 +130,55 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
+                // Configurar el authentication provider
+                .authenticationProvider(authenticationProvider())
+
+                // Agregar el filtro JWT antes del filtro de autenticación estándar
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+
                 // Deshabilitar headers de frame para H2 Console (solo para desarrollo)
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()));
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+
+                // Configurar manejo de excepciones de autenticación
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            // Manejo personalizado para requests no autenticadas
+                            response.setStatus(401);
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+
+                            String errorResponse = String.format(
+                                    "{\"timestamp\":\"%s\",\"status\":401,\"error\":\"Unauthorized\",\"message\":\"%s\",\"path\":\"%s\"}",
+                                    java.time.LocalDateTime.now().toString(),
+                                    "Token JWT requerido",
+                                    request.getRequestURI()
+                            );
+
+                            response.getWriter().write(errorResponse);
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            // Manejo personalizado para requests sin permisos suficientes
+                            response.setStatus(403);
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+
+                            String errorResponse = String.format(
+                                    "{\"timestamp\":\"%s\",\"status\":403,\"error\":\"Forbidden\",\"message\":\"%s\",\"path\":\"%s\"}",
+                                    java.time.LocalDateTime.now().toString(),
+                                    "Permisos insuficientes",
+                                    request.getRequestURI()
+                            );
+
+                            response.getWriter().write(errorResponse);
+                        })
+                );
 
         return http.build();
     }
 
     /**
      * Configuración de endpoints para diferentes niveles de acceso
-     * Estos serán útiles cuando implementemos JWT y roles
+     * Documentación de la estructura de permisos
      */
     public static class SecurityEndpoints {
 
@@ -88,42 +190,42 @@ public class SecurityConfig {
                 "/swagger-ui/**",
                 "/v3/api-docs/**",
                 "/actuator/health",
-                "/actuator/info"
-        };
-
-        // Endpoints que requieren autenticación básica
-        public static final String[] AUTHENTICATED_ENDPOINTS = {
-                "/api/productos/**",
-                "/api/categorias/**",
-                "/api/movimientos/**"
+                "/actuator/info",
+                "/favicon.ico",
+                "/error"
         };
 
         // Endpoints que requieren rol de ADMIN
-        public static final String[] ADMIN_ENDPOINTS = {
-                "/api/admin/**",
+        public static final String[] ADMIN_ONLY_ENDPOINTS = {
                 "/api/usuarios/**",
                 "/api/roles/**",
-                "/actuator/**"
+                "/actuator/**",
+                "DELETE:/api/productos/**",
+                "DELETE:/api/categorias/**"
         };
 
-        // Endpoints que requieren rol de MANAGER o superior
-        public static final String[] MANAGER_ENDPOINTS = {
-                "/api/manager/**",
+        // Endpoints que requieren rol de GERENTE o superior
+        public static final String[] MANAGER_OR_ABOVE_ENDPOINTS = {
                 "/api/reportes/**",
-                "/api/estadisticas/**"
+                "/api/estadisticas/**",
+                "POST:/api/productos/**",
+                "PUT:/api/productos/**",
+                "POST:/api/categorias/**",
+                "PUT:/api/categorias/**",
+                "POST:/api/movimientos/**"
         };
 
         // Endpoints de solo lectura para EMPLEADO
         public static final String[] EMPLOYEE_READ_ENDPOINTS = {
                 "GET:/api/productos/**",
                 "GET:/api/categorias/**",
-                "GET:/api/movimientos/mis-movimientos/**"
+                "GET:/api/movimientos/**"
         };
     }
 
     /**
      * Configuración de roles y permisos
-     * Para futuro uso con JWT
+     * Documentación del sistema de autorización
      */
     public static class SecurityRoles {
 
@@ -160,7 +262,7 @@ public class SecurityConfig {
     }
 
     /**
-     * Configuración de JWT (para implementación futura)
+     * Configuración de JWT
      */
     public static class JwtConfig {
 
