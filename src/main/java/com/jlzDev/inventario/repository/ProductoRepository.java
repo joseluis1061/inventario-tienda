@@ -14,6 +14,9 @@ import java.util.Optional;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
+    // ✅ TODOS ESTOS MÉTODOS FUNCIONAN AUTOMÁTICAMENTE CON EL CAMPO IMAGEN
+    // porque Spring JPA mapea automáticamente todos los campos de la Entity
+
     // Buscar producto por nombre
     Optional<Producto> findByNombre(String nombre);
 
@@ -70,16 +73,30 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByFechaActualizacionAfter(LocalDateTime fecha);
 
     // Obtener estadísticas de stock
-    @Query("""
-        SELECT 
-            COUNT(p) as total,
-            COUNT(CASE WHEN p.stockActual <= p.stockMinimo THEN 1 END) as stockBajo,
-            COUNT(CASE WHEN p.stockActual = 0 THEN 1 END) as sinStock
-        FROM Producto p
-    """)
+    @Query(value = """
+    SELECT 
+        COUNT(*) as total,
+        SUM(CASE WHEN stock_actual <= stock_minimo THEN 1 ELSE 0 END) as stock_bajo,
+        SUM(CASE WHEN stock_actual = 0 THEN 1 ELSE 0 END) as sin_stock
+    FROM productos
+    """, nativeQuery = true)
     Object[] getEstadisticasStock();
 
     // Buscar productos por categoría y nombre
     @Query("SELECT p FROM Producto p WHERE p.categoria.id = :categoriaId AND p.nombre LIKE %:nombre%")
     List<Producto> findByCategoriaIdAndNombreContaining(@Param("categoriaId") Long categoriaId, @Param("nombre") String nombre);
+
+    // ===== MÉTODOS OPCIONALES QUE PODRÍAS AÑADIR ESPECÍFICOS PARA IMAGEN =====
+
+    // Opcional: Buscar productos que tienen imagen
+    // @Query("SELECT p FROM Producto p WHERE p.imagen IS NOT NULL AND p.imagen != ''")
+    // List<Producto> findProductosConImagen();
+
+    // Opcional: Buscar productos sin imagen
+    // @Query("SELECT p FROM Producto p WHERE p.imagen IS NULL OR p.imagen = ''")
+    // List<Producto> findProductosSinImagen();
+
+    // Opcional: Contar productos con imagen
+    // @Query("SELECT COUNT(p) FROM Producto p WHERE p.imagen IS NOT NULL AND p.imagen != ''")
+    // Long countProductosConImagen();
 }

@@ -38,6 +38,16 @@ public class ProductoResponse {
     private String descripcion;
 
     /**
+     * URL de la imagen del producto
+     */
+    private String imagen;
+
+    /**
+     * URL de imagen placeholder si no tiene imagen
+     */
+    private String imagenPlaceholder;
+
+    /**
      * Precio del producto
      */
     private BigDecimal precio;
@@ -207,6 +217,8 @@ public class ProductoResponse {
                 .id(producto.getId())
                 .nombre(producto.getNombre())
                 .descripcion(producto.getDescripcion())
+                .imagen(producto.getImagen())
+                .imagenPlaceholder(obtenerImagenPlaceholder(producto.getImagen(), producto.getCategoria()))
                 .precio(producto.getPrecio())
                 .stockActual(producto.getStockActual())
                 .stockMinimo(producto.getStockMinimo())
@@ -252,6 +264,7 @@ public class ProductoResponse {
         return ProductoResponse.builder()
                 .id(producto.getId())
                 .nombre(producto.getNombre())
+                .imagen(producto.getImagen())
                 .precio(producto.getPrecio())
                 .stockActual(producto.getStockActual())
                 .stockMinimo(producto.getStockMinimo())
@@ -275,6 +288,7 @@ public class ProductoResponse {
         return ProductoResponse.builder()
                 .id(producto.getId())
                 .nombre(producto.getNombre())
+                .imagen(producto.getImagen())
                 .precio(producto.getPrecio())
                 .stockActual(producto.getStockActual())
                 .estadoStock(producto.getEstadoStock())
@@ -293,11 +307,50 @@ public class ProductoResponse {
                 .id(producto.getId())
                 .nombre(producto.getNombre())
                 .descripcion(producto.getDescripcion())
+                .imagen(producto.getImagen())
                 .categoria(CategoriaInfo.builder()
                         .id(producto.getCategoria().getId())
                         .nombre(producto.getCategoria().getNombre())
                         .build())
                 .build();
+    }
+
+    /**
+     * Obtener imagen placeholder basada en la categoría
+     */
+    private static String obtenerImagenPlaceholder(String imagen, com.jlzDev.inventario.entity.Categoria categoria) {
+        if (imagen != null && !imagen.trim().isEmpty()) {
+            return null; // No necesita placeholder
+        }
+
+        if (categoria == null) {
+            return "https://via.placeholder.com/300x300/6B7280/FFFFFF?text=Producto";
+        }
+
+        String nombreCategoria = categoria.getNombre().toLowerCase();
+
+        if (nombreCategoria.contains("electrón") || nombreCategoria.contains("tecnolog")) {
+            return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFPAU8rBkD5OxnL5Zmi-mbhJrvyvb09n4Wfw&s";
+//            return "https://via.placeholder.com/300x300/3B82F6/FFFFFF?text=Electrónico";
+        }
+        if (nombreCategoria.contains("ropa") || nombreCategoria.contains("vestim")) {
+            return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFPAU8rBkD5OxnL5Zmi-mbhJrvyvb09n4Wfw&s";
+//            return "https://via.placeholder.com/300x300/EC4899/FFFFFF?text=Ropa";
+        }
+        if (nombreCategoria.contains("hogar") || nombreCategoria.contains("casa")) {
+            return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFPAU8rBkD5OxnL5Zmi-mbhJrvyvb09n4Wfw&s";
+//            return "https://via.placeholder.com/300x300/F59E0B/FFFFFF?text=Hogar";
+        }
+        if (nombreCategoria.contains("deporte")) {
+            return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFPAU8rBkD5OxnL5Zmi-mbhJrvyvb09n4Wfw&s";
+//            return "https://via.placeholder.com/300x300/10B981/FFFFFF?text=Deportes";
+        }
+        if (nombreCategoria.contains("libro")) {
+            return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFPAU8rBkD5OxnL5Zmi-mbhJrvyvb09n4Wfw&s";
+//            return "https://via.placeholder.com/300x300/8B5CF6/FFFFFF?text=Libro";
+        }
+        return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFPAU8rBkD5OxnL5Zmi-mbhJrvyvb09n4Wfw&s";
+//        return "https://via.placeholder.com/300x300/6B7280/FFFFFF?text=" + categoria.getNombre();
     }
 
     /**
@@ -409,6 +462,27 @@ public class ProductoResponse {
     }
 
     /**
+     * Verificar si tiene imagen
+     */
+    public boolean tieneImagen() {
+        return imagen != null && !imagen.trim().isEmpty();
+    }
+
+    /**
+     * Obtener URL de imagen a mostrar (imagen real o placeholder)
+     */
+    public String getImagenDisplay() {
+        return tieneImagen() ? imagen : imagenPlaceholder;
+    }
+
+    /**
+     * Verificar si la imagen es un placeholder
+     */
+    public boolean esImagenPlaceholder() {
+        return !tieneImagen() && imagenPlaceholder != null;
+    }
+
+    /**
      * Verificar si tiene movimientos
      */
     public boolean tieneMovimientos() {
@@ -488,6 +562,7 @@ public class ProductoResponse {
                 ", stockMinimo=" + stockMinimo +
                 ", estadoStock='" + estadoStock + '\'' +
                 ", categoria='" + (categoria != null ? categoria.getNombre() : "null") + '\'' +
+                ", tieneImagen=" + tieneImagen() +
                 '}';
     }
 }

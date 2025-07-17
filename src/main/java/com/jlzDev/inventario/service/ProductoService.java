@@ -172,6 +172,14 @@ public class ProductoService {
             producto.setDescripcion(producto.getDescripcion().trim());
         }
 
+        // Normalizar imagen
+        if (producto.getImagen() != null) {
+            producto.setImagen(producto.getImagen().trim());
+            if (producto.getImagen().isEmpty()) {
+                producto.setImagen(null);
+            }
+        }
+
         // Verificar que la categoría existe
         Categoria categoria = categoriaService.obtenerRequerida(producto.getCategoria().getId());
         producto.setCategoria(categoria);
@@ -222,6 +230,16 @@ public class ProductoService {
             productoExistente.setDescripcion(productoActualizado.getDescripcion().trim());
         } else {
             productoExistente.setDescripcion(null);
+        }
+
+        // Actualizar imagen
+        if (productoActualizado.getImagen() != null) {
+            productoExistente.setImagen(productoActualizado.getImagen().trim());
+            if (productoExistente.getImagen().isEmpty()) {
+                productoExistente.setImagen(null);
+            }
+        } else {
+            productoExistente.setImagen(null);
         }
 
         productoExistente.setPrecio(productoActualizado.getPrecio());
@@ -348,13 +366,77 @@ public class ProductoService {
     public StockStats obtenerEstadisticasStock() {
         log.debug("Obteniendo estadísticas de stock");
 
-        Object[] stats = productoRepository.getEstadisticasStock();
+        try {
+            Object[] result = productoRepository.getEstadisticasStock();
 
-        return StockStats.builder()
-                .totalProductos(((Number) stats[0]).longValue())
-                .productosStockBajo(((Number) stats[1]).longValue())
-                .productosSinStock(((Number) stats[2]).longValue())
-                .build();
+            // Debugging - quitar después de validar
+            log.debug("Resultado de query - Tipo: {}, Longitud: {}",
+                    result.getClass().getSimpleName(), result.length);
+            for (int i = 0; i < result.length; i++) {
+                log.debug("result[{}] = {} (tipo: {})", i, result[i],
+                        result[i] != null ? result[i].getClass().getSimpleName() : "null");
+            }
+
+            // El resultado viene como: [Object[]] donde Object[] = [3, 3, 0]
+            // Necesitamos extraer el array interno
+            Object[] stats;
+            if (result.length == 1 && result[0] instanceof Object[]) {
+                // Caso: SQL nativo retorna un array dentro de otro array
+                stats = (Object[]) result[0];
+                log.debug("Extrayendo array interno: {}", java.util.Arrays.toString(stats));
+            } else {
+                // Caso: JPA query retorna directamente los valores
+                stats = result;
+            }
+
+            // Validar que tenemos exactamente 3 valores
+            if (stats.length != 3) {
+                throw new RuntimeException("Se esperaban 3 valores en las estadísticas, pero se recibieron: " + stats.length);
+            }
+
+            // Conversión segura de tipos
+            Long totalProductos = convertToLong(stats[0]);
+            Long productosStockBajo = convertToLong(stats[1]);
+            Long productosSinStock = convertToLong(stats[2]);
+
+            log.debug("Estadísticas procesadas - Total: {}, Stock Bajo: {}, Sin Stock: {}",
+                    totalProductos, productosStockBajo, productosSinStock);
+
+            return StockStats.builder()
+                    .totalProductos(totalProductos)
+                    .productosStockBajo(productosStockBajo)
+                    .productosSinStock(productosSinStock)
+                    .build();
+
+        } catch (Exception e) {
+            log.error("Error al obtener estadísticas de stock: {}", e.getMessage(), e);
+            throw new RuntimeException("Error al calcular estadísticas de stock", e);
+        }
+    }
+
+    /**
+     * Método auxiliar para conversión segura a Long
+     */
+    private Long convertToLong(Object value) {
+        if (value == null) {
+            return 0L;
+        }
+
+        if (value instanceof Number) {
+            return ((Number) value).longValue();
+        }
+
+        if (value instanceof String) {
+            try {
+                return Long.parseLong((String) value);
+            } catch (NumberFormatException e) {
+                log.warn("No se pudo convertir string a Long: {}", value);
+                return 0L;
+            }
+        }
+
+        log.warn("Tipo inesperado en estadísticas: {} - {}", value.getClass(), value);
+        return 0L;
     }
 
     /**
@@ -390,6 +472,11 @@ public class ProductoService {
             validarLongitudDescripcion(producto.getDescripcion());
         }
 
+        // Validar imagen si está presente
+        if (producto.getImagen() != null && !producto.getImagen().trim().isEmpty()) {
+            validarUrlImagen(producto.getImagen());
+        }
+
         validarPrecio(producto.getPrecio());
 
         if (producto.getStockActual() != null) {
@@ -417,6 +504,11 @@ public class ProductoService {
             validarLongitudDescripcion(producto.getDescripcion());
         }
 
+        // Validar imagen si está presente
+        if (producto.getImagen() != null && !producto.getImagen().trim().isEmpty()) {
+            validarUrlImagen(producto.getImagen());
+        }
+
         validarPrecio(producto.getPrecio());
 
         if (producto.getStockMinimo() != null) {
@@ -425,6 +517,35 @@ public class ProductoService {
 
         if (producto.getCategoria() == null || producto.getCategoria().getId() == null) {
             throw new IllegalArgumentException("La categoría es obligatoria");
+        }
+    }
+
+    private void validarUrlImagen(String imagen) {
+        if (imagen == null || imagen.trim().isEmpty()) {
+            return; // null o vacío es válido
+        }
+
+        String imagenTrimmed = imagen.trim();
+
+        if (imagenTrimmed.length() > 500) {
+            throw new IllegalArgumentException("La URL de la imagen no puede exceder 500 caracteres");
+        }
+
+        // Validar formato básico de URL
+        if (!imagenTrimmed.matches("^https?://.*")) {
+            throw new IllegalArgumentException("La imagen debe ser una URL válida que comience con http:// o https://");
+        }
+
+        // Validar extensiones permitidas (opcional pero recomendado)
+        String imagenLower = imagenTrimmed.toLowerCase();
+        if (!imagenLower.matches(".*\\.(jpg|jpeg|png|gif|webp|svg).*")) {
+            log.warn("La imagen no parece tener una extensión de imagen válida: {}", imagenTrimmed);
+            // No lanzar excepción, solo advertencia
+        }
+
+        // Validar que no contenga caracteres peligrosos
+        if (imagenTrimmed.matches(".*[<>\"'].*")) {
+            throw new IllegalArgumentException("La URL de la imagen contiene caracteres no permitidos");
         }
     }
 

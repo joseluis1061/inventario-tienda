@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -368,6 +369,7 @@ public class ProductoController {
             Producto producto = Producto.builder()
                     .nombre(productoRequest.getNombre())
                     .descripcion(productoRequest.getDescripcion())
+                    .imagen(productoRequest.getImagen())  // ⭐ CAMPO IMAGEN AÑADIDO
                     .precio(productoRequest.getPrecio())
                     .stockMinimo(productoRequest.getStockMinimo())
                     .categoria(Categoria.builder().id(productoRequest.getCategoriaId()).build()) // Solo el ID para la referencia
@@ -427,6 +429,7 @@ public class ProductoController {
             Producto productoActualizado = Producto.builder()
                     .nombre(productoRequest.getNombre())
                     .descripcion(productoRequest.getDescripcion())
+                    .imagen(productoRequest.getImagen())  // ⭐ CAMPO IMAGEN AÑADIDO
                     .precio(productoRequest.getPrecio())
                     .stockMinimo(productoRequest.getStockMinimo())
                     .categoria(Categoria.builder().id(productoRequest.getCategoriaId()).build()) // Solo el ID para la referencia
@@ -455,6 +458,59 @@ public class ProductoController {
             }
         } catch (Exception e) {
             log.error("PUT /api/productos/{} - Error interno: {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * Actualizar solo la imagen del producto
+     * PATCH /api/productos/{id}/imagen
+     */
+    @PatchMapping("/{id}/imagen")
+    public ResponseEntity<ProductoResponse> actualizarImagen(@PathVariable Long id,
+                                                             @RequestBody Map<String, String> request) {
+        log.info("PATCH /api/productos/{}/imagen - Actualizando imagen del producto", id);
+
+        try {
+            String nuevaImagen = request.get("imagen");
+
+            // Validación básica
+            if (nuevaImagen != null && !nuevaImagen.trim().isEmpty()) {
+                nuevaImagen = nuevaImagen.trim();
+                if (nuevaImagen.length() > 500) {
+                    log.warn("PATCH /api/productos/{}/imagen - URL demasiado larga", id);
+                    return ResponseEntity.badRequest().build();
+                }
+            } else {
+                nuevaImagen = null;
+            }
+
+            // Obtener producto existente
+            Producto producto = productoService.obtenerRequerido(id);
+
+            // Actualizar solo la imagen
+            producto.setImagen(nuevaImagen);
+            Producto productoActualizado = productoService.actualizar(id, producto);
+
+            // Convertir a response
+            ProductoResponse productoResponse = ProductoResponse.fromEntity(productoActualizado);
+
+            log.info("PATCH /api/productos/{}/imagen - Imagen actualizada exitosamente", id);
+            return ResponseEntity.ok(productoResponse);
+
+        } catch (IllegalArgumentException e) {
+            log.warn("PATCH /api/productos/{}/imagen - Datos inválidos: {}", id, e.getMessage());
+            return ResponseEntity.badRequest().build();
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("no encontrado")) {
+                log.warn("PATCH /api/productos/{}/imagen - Producto no encontrado", id);
+                return ResponseEntity.notFound().build();
+            } else {
+                log.warn("PATCH /api/productos/{}/imagen - Error de negocio: {}", id, e.getMessage());
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+        } catch (Exception e) {
+            log.error("PATCH /api/productos/{}/imagen - Error interno: {}", id, e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

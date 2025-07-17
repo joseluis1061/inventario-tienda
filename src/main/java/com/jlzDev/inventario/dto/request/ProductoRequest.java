@@ -35,6 +35,15 @@ public class ProductoRequest {
     private String descripcion;
 
     /**
+     * URL de la imagen del producto (opcional)
+     * Debe ser una URL válida si se proporciona
+     */
+    @Size(max = 500, message = "La URL de la imagen no puede exceder 500 caracteres")
+    @Pattern(regexp = "^(https?://)?(www\\.)?[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\\.[a-zA-Z]{2,}(/.*)?$|^$",
+            message = "La imagen debe ser una URL válida")
+    private String imagen;
+
+    /**
      * Precio del producto (obligatorio)
      * Debe ser positivo y tener máximo 2 decimales
      */
@@ -74,6 +83,17 @@ public class ProductoRequest {
             this.descripcion = capitalizarDescripcion(this.descripcion);
         } else {
             this.descripcion = null; // Convertir string vacío a null
+        }
+
+        // Normalizar imagen
+        if (this.imagen != null && !this.imagen.trim().isEmpty()) {
+            this.imagen = this.imagen.trim();
+            // Añadir protocolo https si no está presente
+            if (!this.imagen.startsWith("http://") && !this.imagen.startsWith("https://")) {
+                this.imagen = "https://" + this.imagen;
+            }
+        } else {
+            this.imagen = null; // Convertir string vacío a null
         }
 
         // Establecer stock mínimo como 0 por defecto si no se especifica
@@ -136,10 +156,48 @@ public class ProductoRequest {
     }
 
     /**
+     * Verificar si tiene imagen configurada
+     */
+    public boolean tieneImagen() {
+        return imagen != null && !imagen.trim().isEmpty();
+    }
+
+    /**
      * Verificar si tiene stock mínimo configurado (mayor a 0)
      */
     public boolean tieneStockMinimoConfigurado() {
         return stockMinimo != null && stockMinimo > 0;
+    }
+
+    /**
+     * Verificar si la URL de imagen parece válida
+     */
+    public boolean esImagenValida() {
+        if (!tieneImagen()) {
+            return true; // null es válido
+        }
+
+        try {
+            return imagen.matches("^https?://.*\\.(jpg|jpeg|png|gif|webp|svg).*$");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Obtener extensión de la imagen
+     */
+    public String getExtensionImagen() {
+        if (!tieneImagen()) {
+            return null;
+        }
+
+        int lastDot = imagen.lastIndexOf('.');
+        if (lastDot > 0 && lastDot < imagen.length() - 1) {
+            return imagen.substring(lastDot + 1).toLowerCase();
+        }
+
+        return null;
     }
 
     /**
@@ -249,8 +307,8 @@ public class ProductoRequest {
      * Obtener resumen para logs (sin información sensible)
      */
     public String getResumenParaLog() {
-        return String.format("ProductoRequest{nombre='%s', precio=%s, categoriaId=%d}",
-                nombre, precio, categoriaId);
+        return String.format("ProductoRequest{nombre='%s', precio=%s, categoriaId=%d, tieneImagen=%s}",
+                nombre, precio, categoriaId, tieneImagen());
     }
 
     /**
@@ -270,6 +328,11 @@ public class ProductoRequest {
             return false; // Stock mínimo excesivamente alto
         }
 
+        // Validar imagen si está presente
+        if (tieneImagen() && !esImagenValida()) {
+            return false; // URL de imagen inválida
+        }
+
         return true;
     }
 
@@ -279,6 +342,8 @@ public class ProductoRequest {
                 "nombre='" + nombre + '\'' +
                 ", descripcion='" + (descripcion != null ?
                 descripcion.substring(0, Math.min(descripcion.length(), 50)) + "..." : "null") + '\'' +
+                ", imagen='" + (imagen != null ?
+                imagen.substring(0, Math.min(imagen.length(), 50)) + "..." : "null") + '\'' +
                 ", precio=" + precio +
                 ", stockMinimo=" + stockMinimo +
                 ", categoriaId=" + categoriaId +
