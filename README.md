@@ -147,3 +147,17 @@ Funcionales (15%)   ← Reglas de negocio
 Integración (25%)    ← Capas del sistema
 ─────────────────
 Unitarias (55%)       ← Lógica de servicios
+
+## Ejecución de pruebas
+
+1. Correr el test
+![Correr_prueba](img/1. Correr Pruebas.bmp)
+
+2. Set de pruebas
+![Set_Pruebas](img/2. Set Pruebas.bmp)
+
+3. Pruebas por Objetivos
+![Objetivos](img/3. Pruebas Por Objetivos.bmp)
+
+4. Resultados
+![Resultados](img/4. Resultados.bmp)
