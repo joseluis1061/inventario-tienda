@@ -151,13 +151,13 @@ Unitarias (55%)       ← Lógica de servicios
 ## Ejecución de pruebas
 
 1. Correr el test
-![Correr_prueba](img/1. Correr Pruebas.jpg)
+![Correr_prueba](img/1. Correr Pruebas.png)
 
 2. Set de pruebas
-![Set_Pruebas](img/2. Set Pruebas.jpg)
+![Set_Pruebas](img/2. Set Pruebas.png)
 
 3. Pruebas por Objetivos
-![Objetivos](img/3. Pruebas Por Objetivos.jpg)
+![Objetivos](img/3. Pruebas Por Objetivos.png)
 
 4. Resultados
-![Resultados](img/4. Resultados.jpg)
+![Resultados](img/4. Resultados.png)
